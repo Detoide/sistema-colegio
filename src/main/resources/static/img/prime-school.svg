@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Prime School">
+  <circle cx="32" cy="32" r="31" fill="#ffffff"/>
+  <path d="M32 5a27 27 0 0 1 27 27H32V5Z" fill="#145a96"/>
+  <path d="M5 32a27 27 0 0 0 27 27V32H5Z" fill="#c8102e"/>
+  <path d="M32 5a27 27 0 0 0-27 27h14c0-7.2 5.8-13 13-13V5Z" fill="#ffffff"/>
+  <path d="M32 59a27 27 0 0 0 27-27H45c0 7.2-5.8 13-13 13v14Z" fill="#ffffff"/>
+  <path d="M32 19c7.2 0 13 5.8 13 13h5c0-9.9-8.1-18-18-18v5Z" fill="#145a96"/>
+  <path d="M32 45c-7.2 0-13-5.8-13-13h-5c0 9.9 8.1 18 18 18v-5Z" fill="#c8102e"/>
+</svg>

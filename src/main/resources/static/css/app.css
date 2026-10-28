@@ -1,0 +1,189 @@
+:root {
+    --prime-blue: #145a96;
+    --prime-red: #c8102e;
+    --prime-green: #1f9d55;
+    --prime-dark: #16283b;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #263445;
+}
+
+.card {
+    border: 0;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.table > :not(caption) > * > * {
+    vertical-align: middle;
+}
+
+.stat-card .stat-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.stat-card .stat-label {
+    color: #6c757d;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--prime-green);
+    --bs-btn-border-color: var(--prime-green);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #178347;
+    --bs-btn-hover-border-color: #178347;
+    --bs-btn-focus-shadow-rgb: 31, 157, 85;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #146e3c;
+    --bs-btn-active-border-color: #146e3c;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--prime-green);
+    --bs-btn-border-color: var(--prime-green);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--prime-green);
+    --bs-btn-hover-border-color: var(--prime-green);
+    --bs-btn-focus-shadow-rgb: 31, 157, 85;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #178347;
+    --bs-btn-active-border-color: #178347;
+}
+
+.text-bg-primary {
+    color: #fff !important;
+    background-color: var(--prime-blue) !important;
+}
+
+.page-link {
+    color: var(--prime-green);
+}
+
+.page-link:hover {
+    color: #146e3c;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(31, 157, 85, 0.55);
+    box-shadow: 0 0 0 0.2rem rgba(31, 157, 85, 0.15);
+}
+
+.navbar-prime {
+    background: #fff;
+    border-bottom: 1px solid #e4e9f0;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+}
+
+.navbar-prime .navbar-brand {
+    color: var(--prime-dark);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.navbar-prime .nav-link {
+    color: #475569;
+}
+
+.navbar-prime .nav-link:hover,
+.navbar-prime .nav-link:focus {
+    color: var(--prime-green);
+}
+
+.navbar-prime .navbar-toggler {
+    border-color: #cbd5e1;
+}
+
+.brand-logo {
+    width: 36px;
+    height: 36px;
+    margin-right: 0.55rem;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(20, 90, 150, 0.12), transparent 32rem),
+        radial-gradient(circle at 90% 90%, rgba(200, 16, 46, 0.1), transparent 30rem),
+        #eef2f7;
+}
+
+.login-card {
+    border-top: 4px solid var(--prime-green);
+}
+
+.login-logo {
+    width: 64px;
+    height: 64px;
+}
+
+.wizard-steps {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.wizard-step {
+    flex: 1;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.wizard-step .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.35rem;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    font-weight: 700;
+}
+
+.wizard-step.active {
+    color: var(--prime-dark);
+}
+
+.wizard-step.active .step-number {
+    background: var(--prime-blue);
+    color: #fff;
+}
+
+.wizard-step.done .step-number {
+    background: var(--prime-green);
+    color: #fff;
+}
+
+.wizard-panel {
+    display: none;
+}
+
+.wizard-panel.active {
+    display: block;
+}
+
+.summary-list dt {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.summary-list dd {
+    margin-bottom: 0.65rem;
+    font-weight: 600;
+}
+
+.attendance-select {
+    min-width: 9rem;
+}
