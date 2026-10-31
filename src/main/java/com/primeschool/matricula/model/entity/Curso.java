@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Curso o asignatura impartida en la institución.
+ */
 @Entity
 @Table(name = "curso")
 @Getter

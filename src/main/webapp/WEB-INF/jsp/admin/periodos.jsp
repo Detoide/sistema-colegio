@@ -5,7 +5,9 @@
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
     <h3 class="mb-0">Periodos académicos</h3>
     <div class="d-flex gap-2">
-        <a class="btn btn-outline-secondary" href="${ctx}/admin/usuarios">Usuarios</a>
+        <c:if test="${esAdminUsuarios}">
+            <a class="btn btn-outline-secondary" href="${ctx}/admin/usuarios">Usuarios</a>
+        </c:if>
         <a class="btn btn-outline-secondary" href="${ctx}/admin/catalogos">Catálogos</a>
     </div>
 </div>

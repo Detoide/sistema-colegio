@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="esAdmin" value="${usuarioActual.rol.nombreRol == 'ADMINISTRADOR' || usuarioActual.rol.nombreRol == 'DIRECTIVO'}"/>
+<c:set var="esAdminUsuarios" value="${usuarioActual.rol.nombreRol == 'ADMINISTRADOR'}"/>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -40,8 +41,11 @@
                     </c:if>
                     <li class="nav-item"><a class="nav-link" href="${ctx}/boletas">Boletas</a></li>
                     <li class="nav-item"><a class="nav-link" href="${ctx}/alertas">Alertas</a></li>
-                    <c:if test="${esAdmin}">
+                    <c:if test="${esAdminUsuarios}">
                         <li class="nav-item"><a class="nav-link" href="${ctx}/admin/usuarios">Administración</a></li>
+                    </c:if>
+                    <c:if test="${esAdmin && !esAdminUsuarios}">
+                        <li class="nav-item"><a class="nav-link" href="${ctx}/admin/periodos">Administración</a></li>
                     </c:if>
                 </ul>
                 <div class="d-flex align-items-center gap-3">

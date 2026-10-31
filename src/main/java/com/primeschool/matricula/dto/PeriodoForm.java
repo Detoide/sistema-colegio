@@ -2,6 +2,7 @@ package com.primeschool.matricula.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,12 +10,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+/**
+ * Datos de entrada para crear o actualizar un periodo académico.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 public class PeriodoForm {
 
     @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 30, message = "El nombre no puede superar los 30 caracteres")
     private String nombre;
 
     @NotNull(message = "La fecha de inicio es obligatoria")

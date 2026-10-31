@@ -76,7 +76,9 @@
                         <a class="btn btn-outline-secondary btn-sm" href="${ctx}/estudiantes">Estudiantes</a>
                         <a class="btn btn-outline-secondary btn-sm" href="${ctx}/apoderados">Apoderados</a>
                         <a class="btn btn-outline-secondary btn-sm" href="${ctx}/vacantes">Vacantes</a>
-                        <a class="btn btn-outline-secondary btn-sm" href="${ctx}/admin/usuarios">Usuarios</a>
+                        <c:if test="${esAdminUsuarios}">
+                            <a class="btn btn-outline-secondary btn-sm" href="${ctx}/admin/usuarios">Usuarios</a>
+                        </c:if>
                         <a class="btn btn-outline-secondary btn-sm" href="${ctx}/admin/periodos">Periodos</a>
                         <a class="btn btn-outline-secondary btn-sm" href="${ctx}/admin/catalogos">Catálogos</a>
                     </c:if>

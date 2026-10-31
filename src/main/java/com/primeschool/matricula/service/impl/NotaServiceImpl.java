@@ -29,6 +29,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Implementación del servicio de calificaciones.
+ *
+ * <p>Valida el acceso del docente, el rango de las notas y actualiza las
+ * alertas de riesgo académico al guardar una calificación.</p>
+ */
 @Service
 public class NotaServiceImpl implements NotaService {
 
@@ -45,6 +51,17 @@ public class NotaServiceImpl implements NotaService {
     private final PeriodoService periodoService;
     private final AlertaService alertaService;
 
+    /**
+     * Crea el servicio con sus repositorios y servicios de apoyo.
+     *
+     * @param notaRepository repositorio de notas
+     * @param matriculaRepository repositorio de matrículas
+     * @param cursoRepository repositorio de cursos
+     * @param seccionRepository repositorio de secciones
+     * @param periodoRepository repositorio de periodos
+     * @param periodoService servicio de periodos
+     * @param alertaService servicio de alertas
+     */
     public NotaServiceImpl(NotaRepository notaRepository,
                            MatriculaRepository matriculaRepository,
                            CursoRepository cursoRepository,
@@ -61,6 +78,12 @@ public class NotaServiceImpl implements NotaService {
         this.alertaService = alertaService;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si la sección o el periodo no existen
+     * @throws ReglaNegocioException si el usuario no puede consultar la planilla
+     */
     @Override
     public List<NotaFilaDTO> planilla(Integer seccionId, Integer periodoId, Integer cursoId, Usuario usuario) {
         if (seccionId == null || periodoId == null || cursoId == null) {
@@ -92,6 +115,12 @@ public class NotaServiceImpl implements NotaService {
                 .toList();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si el usuario, la nota o la matrícula no son válidos
+     * @throws RecursoNoEncontradoException si la sección, el periodo o el curso no existen
+     */
     @Override
     @Transactional
     public void guardar(NotaForm form, Usuario usuario) {
@@ -149,17 +178,26 @@ public class NotaServiceImpl implements NotaService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BigDecimal promedio(Integer matriculaId, Integer periodoId) {
         Double promedio = notaRepository.promedio(matriculaId, periodoId);
         return promedio == null ? null : BigDecimal.valueOf(promedio).setScale(2, RoundingMode.HALF_UP);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Nota> notasPorMatriculaYPeriodo(Integer matriculaId, Integer periodoId) {
         return notaRepository.findByMatricula_IdMatriculaAndPeriodo_IdPeriodo(matriculaId, periodoId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Nota> notasPorMatricula(Integer matriculaId) {
         return notaRepository.findByMatricula_IdMatriculaOrderByPeriodo_FechaInicioAscCurso_NombreCursoAsc(

@@ -12,15 +12,29 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Controlador de listado y registro de apoderados.
+ */
 @Controller
 public class ApoderadoController {
 
     private final ApoderadoService apoderadoService;
 
+    /**
+     * Crea el controlador con el servicio de apoderados.
+     *
+     * @param apoderadoService servicio de apoderados
+     */
     public ApoderadoController(ApoderadoService apoderadoService) {
         this.apoderadoService = apoderadoService;
     }
 
+    /**
+     * Muestra el listado de apoderados y el formulario de registro.
+     *
+     * @param model modelo de la vista
+     * @return nombre de la vista de apoderados
+     */
     @GetMapping("/apoderados")
     public String listar(Model model) {
         model.addAttribute("apoderados", apoderadoService.listar());
@@ -28,6 +42,15 @@ public class ApoderadoController {
         return "apoderados/lista";
     }
 
+    /**
+     * Registra un nuevo apoderado.
+     *
+     * @param request datos del apoderado
+     * @param bindingResult resultado de la validación
+     * @param model modelo de la vista
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección al listado o vista del formulario con errores
+     */
     @PostMapping("/apoderados")
     public String crear(@Valid @ModelAttribute("apoderado") ApoderadoRequest request,
                         BindingResult bindingResult,

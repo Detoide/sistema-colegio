@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Rol de acceso asignado a los usuarios del sistema.
+ */
 @Entity
 @Table(name = "rol")
 @Getter

@@ -13,6 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Apoderado responsable de un estudiante, vinculado a un usuario del sistema.
+ */
 @Entity
 @Table(name = "apoderado")
 @Getter
@@ -35,10 +38,20 @@ public class Apoderado {
     @Column(name = "telefono", length = 15)
     private String telefono;
 
+    /**
+     * Devuelve el nombre completo del usuario asociado al apoderado.
+     *
+     * @return nombre completo o cadena vacía si no existe usuario
+     */
     public String getNombreCompleto() {
         return usuario != null ? usuario.getNombreCompleto() : "";
     }
 
+    /**
+     * Devuelve el correo electrónico del usuario asociado al apoderado.
+     *
+     * @return correo electrónico o cadena vacía si no existe usuario
+     */
     public String getCorreo() {
         return usuario != null ? usuario.getCorreo() : "";
     }

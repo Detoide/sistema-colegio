@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Formulario para registrar notas y asistencia de una sección.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Formulario para registrar la asistencia de una sección en una fecha.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

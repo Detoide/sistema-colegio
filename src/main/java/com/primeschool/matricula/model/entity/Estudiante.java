@@ -13,6 +13,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Estudiante registrado en el sistema, asociado a un apoderado.
+ */
 @Entity
 @Table(name = "estudiante")
 @Getter
@@ -41,10 +44,20 @@ public class Estudiante {
     @Column(name = "fecha_nacimiento", nullable = false)
     private LocalDate fechaNacimiento;
 
+    /**
+     * Devuelve los apellidos y nombres del estudiante.
+     *
+     * @return nombre completo en formato de apellidos, nombres
+     */
     public String getNombreCompleto() {
         return apellidos + ", " + nombres;
     }
 
+    /**
+     * Devuelve la fecha de nacimiento formateada para su presentación.
+     *
+     * @return fecha en formato dd/MM/yyyy o cadena vacía si no está definida
+     */
     public String getFechaNacimientoTexto() {
         return fechaNacimiento != null
                 ? fechaNacimiento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))

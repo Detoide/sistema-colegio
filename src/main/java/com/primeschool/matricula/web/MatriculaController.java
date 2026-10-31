@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Controlador de listado, registro y gestión de matrículas.
+ */
 @Controller
 public class MatriculaController {
 
@@ -29,6 +32,15 @@ public class MatriculaController {
     private final PeriodoService periodoService;
     private final UsuarioSesion usuarioSesion;
 
+    /**
+     * Crea el controlador con los servicios de matrícula y catálogos.
+     *
+     * @param matriculaService servicio de matrículas
+     * @param estudianteService servicio de estudiantes
+     * @param catalogoService servicio de catálogos
+     * @param periodoService servicio de periodos
+     * @param usuarioSesion accesor del usuario autenticado
+     */
     public MatriculaController(MatriculaService matriculaService,
                                EstudianteService estudianteService,
                                CatalogoService catalogoService,
@@ -41,6 +53,13 @@ public class MatriculaController {
         this.usuarioSesion = usuarioSesion;
     }
 
+    /**
+     * Muestra las matrículas visibles para el usuario autenticado.
+     *
+     * @param authentication autenticación de Spring Security
+     * @param model modelo de la vista
+     * @return nombre de la vista de matrículas
+     */
     @GetMapping("/matriculas")
     public String listar(Authentication authentication, Model model) {
         Usuario usuario = usuarioSesion.actual(authentication);
@@ -48,6 +67,12 @@ public class MatriculaController {
         return "matriculas/lista";
     }
 
+    /**
+     * Muestra el formulario para registrar una nueva matrícula.
+     *
+     * @param model modelo de la vista
+     * @return nombre de la vista del formulario
+     */
     @GetMapping("/matriculas/nueva")
     public String nueva(Model model) {
         model.addAttribute("matricula", new MatriculaRequest());
@@ -55,6 +80,15 @@ public class MatriculaController {
         return "matriculas/form";
     }
 
+    /**
+     * Registra una nueva matrícula a partir de los datos del formulario.
+     *
+     * @param request datos de la matrícula
+     * @param bindingResult resultado de la validación
+     * @param model modelo de la vista
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección al listado o vista del formulario con errores
+     */
     @PostMapping("/matriculas")
     public String registrar(@Valid @ModelAttribute("matricula") MatriculaRequest request,
                             BindingResult bindingResult,
@@ -79,6 +113,13 @@ public class MatriculaController {
         }
     }
 
+    /**
+     * Confirma una matrícula pendiente.
+     *
+     * @param id identificador de la matrícula
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección al listado de matrículas
+     */
     @PostMapping("/matriculas/{id}/confirmar")
     public String confirmar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         matriculaService.confirmar(id);
@@ -86,6 +127,13 @@ public class MatriculaController {
         return "redirect:/matriculas";
     }
 
+    /**
+     * Anula una matrícula y libera su vacante.
+     *
+     * @param id identificador de la matrícula
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección al listado de matrículas
+     */
     @PostMapping("/matriculas/{id}/anular")
     public String anular(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         matriculaService.anular(id);

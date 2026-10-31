@@ -13,23 +13,38 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementación del servicio de estudiantes.
+ */
 @Service
 public class EstudianteServiceImpl implements EstudianteService {
 
     private final EstudianteRepository estudianteRepository;
     private final ApoderadoRepository apoderadoRepository;
 
+    /**
+     * Crea el servicio con los repositorios de estudiantes y apoderados.
+     *
+     * @param estudianteRepository repositorio de estudiantes
+     * @param apoderadoRepository repositorio de apoderados
+     */
     public EstudianteServiceImpl(EstudianteRepository estudianteRepository,
                                  ApoderadoRepository apoderadoRepository) {
         this.estudianteRepository = estudianteRepository;
         this.apoderadoRepository = apoderadoRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Estudiante> listar() {
         return estudianteRepository.findAllByOrderByApellidosAscNombresAsc();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Estudiante> buscar(String q) {
         if (q == null || q.isBlank()) {
@@ -38,12 +53,22 @@ public class EstudianteServiceImpl implements EstudianteService {
         return estudianteRepository.buscar(q.trim());
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si el estudiante no existe
+     */
     @Override
     public Estudiante obtener(Integer id) {
         return estudianteRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Estudiante no encontrado"));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si el apoderado no existe o el código está duplicado
+     */
     @Override
     @Transactional
     public Estudiante guardar(EstudianteRequest request) {
@@ -72,6 +97,9 @@ public class EstudianteServiceImpl implements EstudianteService {
         return estudianteRepository.save(estudiante);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Estudiante> listarPorApoderado(Integer idUsuario) {
         return estudianteRepository.findByApoderado_Usuario_IdUsuarioOrderByApellidosAscNombresAsc(idUsuario);

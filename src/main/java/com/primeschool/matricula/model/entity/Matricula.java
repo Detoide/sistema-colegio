@@ -20,6 +20,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Matrícula de un estudiante en una sección y periodo académico.
+ */
 @Entity
 @Table(name = "matricula")
 @Getter
@@ -52,10 +55,20 @@ public class Matricula {
     @Column(name = "estado", nullable = false, length = 20)
     private EstadoMatricula estado;
 
+    /**
+     * Devuelve el nombre completo del estudiante matriculado.
+     *
+     * @return nombre del estudiante o cadena vacía si no está asociado
+     */
     public String getEstudianteNombre() {
         return estudiante != null ? estudiante.getNombreCompleto() : "";
     }
 
+    /**
+     * Devuelve la fecha de matrícula formateada para su presentación.
+     *
+     * @return fecha en formato dd/MM/yyyy o cadena vacía si no está definida
+     */
     public String getFechaMatriculaTexto() {
         return fechaMatricula != null
                 ? fechaMatricula.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))

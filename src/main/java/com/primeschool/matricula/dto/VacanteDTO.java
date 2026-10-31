@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Resumen de vacantes disponibles por sección.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+/**
+ * Fila con la nota y asistencia actuales de un estudiante.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

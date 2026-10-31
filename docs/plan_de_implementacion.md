@@ -433,7 +433,7 @@ La matriz se aplica en la capa de servicio. Los roles PostgreSQL creados por `sc
 7. **Roles y acceso:** un usuario tiene un solo rol. El control de acceso se aplica en la capa de servicio; el docente solo opera sobre la sección de la que es tutor.
 8. **Borrado:** las claves foráneas restringen la eliminación de historial; las entidades se desactivan con `activo` o cambian de estado. No se eliminan matrículas, notas ni asistencias.
 9. **Auditoría:** los eventos de login y cambios críticos se registran en logs de aplicación; no hay tabla `auditoria` en el esquema actual.
-10. **Datos semilla:** las contraseñas de prueba deben reemplazarse por hashes BCrypt antes de ejecutar pruebas de login.
+10. **Datos semilla:** las contraseñas de prueba se almacenan como hashes BCrypt en `schema.sql`.
 
 ### 5.5 Índices
 
@@ -551,7 +551,7 @@ gantt
 ## 8. Seguridad
 
 - **Autenticación:** Spring Security con formulario de login JSP, sesión del servidor y cierre por inactividad a los 30 minutos.
-- **Contraseñas:** BCrypt con factor 12; longitud mínima de 8 caracteres con mayúscula, minúscula y dígito; bloqueo temporal tras 5 intentos fallidos. Los datos semilla de `schema.sql` usan `'123'` y deben reemplazarse por hashes BCrypt antes de las pruebas de login.
+- **Contraseñas:** BCrypt con factor 12; longitud mínima de 8 caracteres con mayúscula, minúscula y dígito; bloqueo temporal tras 5 intentos fallidos. Los datos semilla de `schema.sql` usan hashes BCrypt; no se versionan contraseñas en texto plano.
 - **Autorización:** RBAC en la capa de servicio a partir de `rol.nombre_rol` y de la matriz de permisos; se valida en cada petición, no solo al renderizar el menú. El docente solo opera sobre la sección de la que es tutor (`seccion.id_tutor`).
 - **Roles PostgreSQL:** `schema.sql` crea `rol_admin`, `rol_docente`, `rol_directivo`, `rol_apoderado` y usuarios `usr_*`. Estos usuarios no se usan como cuentas de la aplicación: no tienen privilegios para leer `usuario.contrasena_hash` ni `rol`, y no aplican aislamiento por fila. La aplicación se conecta con un usuario de servicio y aplica RBAC; los roles de BD quedan para acceso directo y pruebas. Si se requiere seguridad a nivel de BD, se debe implementar RLS y completar los privilegios (trabajo futuro).
 - **CSRF:** protección activa para formularios y peticiones AJAX; token incluido en cada formulario y cabecera.
@@ -601,7 +601,7 @@ gantt
 |---|---|---|---|
 | Desincronización del contador de vacantes | Alta | Alta | Actualización atómica con bloqueo en la transacción de matrícula y reporte de conciliación periódico. |
 | Roles PostgreSQL insuficientes para login y aislamiento | Alta | Alta | Usar un usuario de servicio con RBAC en la aplicación; no usar `usr_*` como cuentas de usuario; evaluar RLS a futuro. |
-| Contraseñas semilla en texto plano | Alta | Alta | Reemplazar por hashes BCrypt antes de las pruebas de login y no usar los datos semilla en producción. |
+| Contraseñas semilla en texto plano | Alta | Baja | Mitigado: los datos semilla usan hashes BCrypt y las credenciales de conexión se pasan por variables de entorno. |
 | Brechas del esquema frente a funcionalidades esperadas | Media | Alta | Alcance alineado al esquema; evaluaciones ponderadas, notificaciones, auditoría y permisos quedan como trabajo futuro. |
 | Secciones sin periodo (multianual) | Media | Media | Asumir un año escolar por conjunto de secciones; documentar la limitación y planificar migración. |
 | Ambigüedad entre año y bimestre en `periodo_academico` | Media | Media | Validar por contención de fechas en el servicio; a futuro agregar tipo y jerarquía. |

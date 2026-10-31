@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementación del servicio que construye el resumen del dashboard.
+ */
 @Service
 public class DashboardServiceImpl implements DashboardService {
 
@@ -23,6 +26,14 @@ public class DashboardServiceImpl implements DashboardService {
     private final MatriculaRepository matriculaRepository;
     private final AlertaTempranaRepository alertaRepository;
 
+    /**
+     * Crea el servicio con los repositorios necesarios para el resumen.
+     *
+     * @param estudianteRepository repositorio de estudiantes
+     * @param seccionRepository repositorio de secciones
+     * @param matriculaRepository repositorio de matrículas
+     * @param alertaRepository repositorio de alertas
+     */
     public DashboardServiceImpl(EstudianteRepository estudianteRepository,
                                 SeccionRepository seccionRepository,
                                 MatriculaRepository matriculaRepository,
@@ -33,6 +44,9 @@ public class DashboardServiceImpl implements DashboardService {
         this.alertaRepository = alertaRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DashboardDTO resumen(Usuario usuario) {
         DashboardDTO dto = new DashboardDTO();

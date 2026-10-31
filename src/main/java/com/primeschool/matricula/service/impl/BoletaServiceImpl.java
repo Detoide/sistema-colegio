@@ -23,6 +23,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Implementación del servicio de generación de boletas.
+ */
 @Service
 public class BoletaServiceImpl implements BoletaService {
 
@@ -32,6 +35,15 @@ public class BoletaServiceImpl implements BoletaService {
     private final AsistenciaService asistenciaService;
     private final PeriodoService periodoService;
 
+    /**
+     * Crea el servicio con sus repositorios y servicios de apoyo.
+     *
+     * @param matriculaRepository repositorio de matrículas
+     * @param notaRepository repositorio de notas
+     * @param periodoRepository repositorio de periodos
+     * @param asistenciaService servicio de asistencia
+     * @param periodoService servicio de periodos
+     */
     public BoletaServiceImpl(MatriculaRepository matriculaRepository,
                              NotaRepository notaRepository,
                              PeriodoAcademicoRepository periodoRepository,
@@ -44,6 +56,12 @@ public class BoletaServiceImpl implements BoletaService {
         this.periodoService = periodoService;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si la matrícula o el periodo no existen
+     * @throws ReglaNegocioException si el usuario no puede ver la boleta o el periodo no es válido
+     */
     @Override
     public BoletaDTO generar(Integer idMatricula, Integer idPeriodo, Usuario usuario) {
         Matricula matricula = matriculaRepository.findById(idMatricula)

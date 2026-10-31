@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementación del servicio de apoderados.
+ */
 @Service
 public class ApoderadoServiceImpl implements ApoderadoService {
 
@@ -24,6 +27,14 @@ public class ApoderadoServiceImpl implements ApoderadoService {
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Crea el servicio con sus repositorios y el codificador de contraseñas.
+     *
+     * @param apoderadoRepository repositorio de apoderados
+     * @param usuarioRepository repositorio de usuarios
+     * @param rolRepository repositorio de roles
+     * @param passwordEncoder codificador de contraseñas
+     */
     public ApoderadoServiceImpl(ApoderadoRepository apoderadoRepository,
                                 UsuarioRepository usuarioRepository,
                                 RolRepository rolRepository,
@@ -34,11 +45,19 @@ public class ApoderadoServiceImpl implements ApoderadoService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Apoderado> listar() {
         return apoderadoRepository.findAllByOrderByUsuario_ApellidosAscUsuario_NombresAsc();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si el correo, DNI o rol no son válidos
+     */
     @Override
     @Transactional
     public Apoderado crear(ApoderadoRequest request) {
@@ -68,6 +87,11 @@ public class ApoderadoServiceImpl implements ApoderadoService {
         return apoderadoRepository.save(apoderado);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si el apoderado no existe
+     */
     @Override
     public Apoderado obtenerPorUsuario(Integer idUsuario) {
         return apoderadoRepository.findByUsuario_IdUsuario(idUsuario)

@@ -25,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Controlador de la planilla de registro académico de notas y asistencia.
+ */
 @Controller
 public class RegistroAcademicoController {
 
@@ -33,6 +36,14 @@ public class RegistroAcademicoController {
     private final PeriodoService periodoService;
     private final UsuarioSesion usuarioSesion;
 
+    /**
+     * Crea el controlador con los servicios de registro y catálogos.
+     *
+     * @param registroAcademicoService servicio de registro académico
+     * @param catalogoService servicio de catálogos
+     * @param periodoService servicio de periodos
+     * @param usuarioSesion accesor del usuario autenticado
+     */
     public RegistroAcademicoController(RegistroAcademicoService registroAcademicoService,
                                        CatalogoService catalogoService,
                                        PeriodoService periodoService,
@@ -43,6 +54,17 @@ public class RegistroAcademicoController {
         this.usuarioSesion = usuarioSesion;
     }
 
+    /**
+     * Muestra la planilla de notas y asistencia según los filtros seleccionados.
+     *
+     * @param seccionId identificador de la sección
+     * @param periodoId identificador del periodo
+     * @param cursoId identificador del curso
+     * @param fecha fecha de la planilla
+     * @param authentication autenticación de Spring Security
+     * @param model modelo de la vista
+     * @return nombre de la vista de la planilla
+     */
     @GetMapping("/registro-academico")
     public String planilla(@RequestParam(required = false) Integer seccionId,
                            @RequestParam(required = false) Integer periodoId,
@@ -80,6 +102,14 @@ public class RegistroAcademicoController {
         return "registro-academico/planilla";
     }
 
+    /**
+     * Guarda las notas y asistencias de la planilla.
+     *
+     * @param form datos de la planilla
+     * @param authentication autenticación de Spring Security
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección a la planilla con los filtros aplicados
+     */
     @PostMapping("/registro-academico")
     public String guardar(@ModelAttribute("registroForm") RegistroAcademicoForm form,
                           Authentication authentication,

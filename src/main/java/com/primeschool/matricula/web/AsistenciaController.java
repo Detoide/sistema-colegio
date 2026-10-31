@@ -23,6 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Controlador de consulta y registro de asistencia.
+ */
 @Controller
 public class AsistenciaController {
 
@@ -30,6 +33,13 @@ public class AsistenciaController {
     private final CatalogoService catalogoService;
     private final UsuarioSesion usuarioSesion;
 
+    /**
+     * Crea el controlador con los servicios de asistencia y catálogos.
+     *
+     * @param asistenciaService servicio de asistencia
+     * @param catalogoService servicio de catálogos
+     * @param usuarioSesion accesor del usuario autenticado
+     */
     public AsistenciaController(AsistenciaService asistenciaService,
                                 CatalogoService catalogoService,
                                 UsuarioSesion usuarioSesion) {
@@ -38,6 +48,15 @@ public class AsistenciaController {
         this.usuarioSesion = usuarioSesion;
     }
 
+    /**
+     * Muestra la planilla de asistencia de una sección en una fecha.
+     *
+     * @param seccionId identificador de la sección
+     * @param fecha fecha de la planilla
+     * @param authentication autenticación de Spring Security
+     * @param model modelo de la vista
+     * @return nombre de la vista de asistencia
+     */
     @GetMapping("/asistencia")
     public String planilla(@RequestParam(required = false) Integer seccionId,
                            @RequestParam(required = false)
@@ -62,6 +81,14 @@ public class AsistenciaController {
         return "asistencia/planilla";
     }
 
+    /**
+     * Guarda los estados de asistencia de la planilla.
+     *
+     * @param form datos de la planilla
+     * @param authentication autenticación de Spring Security
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección a la planilla con los filtros aplicados
+     */
     @PostMapping("/asistencia")
     public String guardar(@ModelAttribute("asistenciaForm") AsistenciaForm form,
                           Authentication authentication,

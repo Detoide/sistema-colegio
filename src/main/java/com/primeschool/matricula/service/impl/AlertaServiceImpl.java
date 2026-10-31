@@ -20,6 +20,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+/**
+ * Implementación del servicio de alertas tempranas.
+ *
+ * <p>Evalúa promedios y faltas acumuladas para generar alertas de riesgo
+ * académico o de inasistencia.</p>
+ */
 @Service
 public class AlertaServiceImpl implements AlertaService {
 
@@ -30,6 +36,16 @@ public class AlertaServiceImpl implements AlertaService {
     private final BigDecimal umbralNota;
     private final int faltasParaAlerta;
 
+    /**
+     * Crea el servicio con sus repositorios y los umbrales de alerta.
+     *
+     * @param alertaRepository repositorio de alertas
+     * @param notaRepository repositorio de notas
+     * @param asistenciaRepository repositorio de asistencias
+     * @param matriculaRepository repositorio de matrículas
+     * @param umbralNota nota mínima para considerar riesgo de reprobación
+     * @param faltasParaAlerta cantidad de faltas que genera una alerta
+     */
     public AlertaServiceImpl(AlertaTempranaRepository alertaRepository,
                              NotaRepository notaRepository,
                              AsistenciaRepository asistenciaRepository,
@@ -44,6 +60,9 @@ public class AlertaServiceImpl implements AlertaService {
         this.faltasParaAlerta = faltasParaAlerta;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<AlertaTemprana> listarVisibles(Usuario usuario) {
         String rol = usuario.getRol().getNombreRol().toUpperCase();
@@ -59,6 +78,12 @@ public class AlertaServiceImpl implements AlertaService {
         };
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si la alerta no existe
+     * @throws ReglaNegocioException si el usuario no puede atender la alerta
+     */
     @Override
     @Transactional
     public void atender(Integer idAlerta, Usuario usuario) {
@@ -79,6 +104,9 @@ public class AlertaServiceImpl implements AlertaService {
         alertaRepository.save(alerta);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void evaluarRiesgoAcademico(Integer idMatricula, Integer idPeriodo) {
@@ -109,6 +137,9 @@ public class AlertaServiceImpl implements AlertaService {
         alertaRepository.save(alerta);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void evaluarInasistencia(Integer idMatricula) {
@@ -136,6 +167,9 @@ public class AlertaServiceImpl implements AlertaService {
         alertaRepository.save(alerta);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long contarActivas() {
         return alertaRepository.countByAtendidaFalse();

@@ -17,17 +17,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Controlador de listado y registro de estudiantes.
+ */
 @Controller
 public class EstudianteController {
 
     private final EstudianteService estudianteService;
     private final ApoderadoService apoderadoService;
 
+    /**
+     * Crea el controlador con los servicios de estudiantes y apoderados.
+     *
+     * @param estudianteService servicio de estudiantes
+     * @param apoderadoService servicio de apoderados
+     */
     public EstudianteController(EstudianteService estudianteService, ApoderadoService apoderadoService) {
         this.estudianteService = estudianteService;
         this.apoderadoService = apoderadoService;
     }
 
+    /**
+     * Muestra el listado de estudiantes y permite buscarlos.
+     *
+     * @param q texto de búsqueda opcional
+     * @param model modelo de la vista
+     * @return nombre de la vista de estudiantes
+     */
     @GetMapping("/estudiantes")
     public String listar(@RequestParam(required = false) String q, Model model) {
         model.addAttribute("estudiantes", estudianteService.buscar(q));
@@ -37,6 +53,13 @@ public class EstudianteController {
         return "estudiantes/lista";
     }
 
+    /**
+     * Carga un estudiante en el formulario para su edición.
+     *
+     * @param id identificador del estudiante
+     * @param model modelo de la vista
+     * @return nombre de la vista de estudiantes
+     */
     @GetMapping("/estudiantes/{id}/editar")
     public String editar(@PathVariable Integer id, Model model) {
         Estudiante estudiante = estudianteService.obtener(id);
@@ -53,6 +76,15 @@ public class EstudianteController {
         return "estudiantes/lista";
     }
 
+    /**
+     * Registra o actualiza un estudiante.
+     *
+     * @param request datos del estudiante
+     * @param bindingResult resultado de la validación
+     * @param model modelo de la vista
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección al listado o vista del formulario con errores
+     */
     @PostMapping("/estudiantes")
     public String guardar(@Valid @ModelAttribute("estudiante") EstudianteRequest request,
                           BindingResult bindingResult,

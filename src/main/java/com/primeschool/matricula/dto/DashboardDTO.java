@@ -10,6 +10,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Datos resumidos que se muestran en el panel principal según el rol.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

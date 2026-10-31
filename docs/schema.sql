@@ -199,10 +199,10 @@ INSERT INTO rol (nombre_rol) VALUES
 -- DATOS DE PRUEBA
 -- ----------------------------------------------------------------------- USUARIOS 
 INSERT INTO usuario (id_rol, nombres, apellidos, correo, contrasena_hash) VALUES
- (1, 'Ana',    'Torres Vega',   'admin@colegio.test',    '123'),
- (2, 'Carlos', 'Requejo Luna',  'docente@colegio.test',  '123'),
- (3, 'Luis',   'Paredes Rivas', 'directivo@colegio.test','123'),
- (4, 'Rosa',   'Quispe Huamán', 'apoderado@correo.test', '123');
+ (1, 'Ana',    'Torres Vega',   'admin@colegio.test',    '$2a$10$EOeruMrgyL9SrhJ5X48Suu.YGffbTv1XeZchsI5BkpKRHm6Ht4eay'),
+ (2, 'Carlos', 'Requejo Luna',  'docente@colegio.test',  '$2a$10$rokyq88iAsiu5/1YSyeep.wZwyAHh/UQi.A44vPYZfpQs9DfkuY5y'),
+ (3, 'Luis',   'Paredes Rivas', 'directivo@colegio.test','$2a$10$w2VJY5Mu8u3mLNVt5ECANO9T.foctF44M2ClwTbKBSY24EAzx/.h.'),
+ (4, 'Rosa',   'Quispe Huamán', 'apoderado@correo.test', '$2a$10$V2vLPBq39QC0j9/6koDOYuQoJFkC1NpJSPYLTmBQ/zUvvMKIBmOMO');
  
 -- APODERADO (usuario 4)
 INSERT INTO apoderado (id_usuario, dni, telefono) VALUES
@@ -274,10 +274,10 @@ END $$;
 -- 3. Usuarios de conexión (los que usará la aplicación Java en pruebas)
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_admin')     THEN CREATE ROLE usr_admin     LOGIN PASSWORD 'Test123' IN ROLE rol_admin;     END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_docente')   THEN CREATE ROLE usr_docente   LOGIN PASSWORD 'Test123' IN ROLE rol_docente;   END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_directivo') THEN CREATE ROLE usr_directivo LOGIN PASSWORD 'Test123' IN ROLE rol_directivo; END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_apoderado') THEN CREATE ROLE usr_apoderado LOGIN PASSWORD 'Test123' IN ROLE rol_apoderado; END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_admin')     THEN CREATE ROLE usr_admin     LOGIN PASSWORD 'CAMBIAR_CLAVE_LOCAL' IN ROLE rol_admin;     END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_docente')   THEN CREATE ROLE usr_docente   LOGIN PASSWORD 'CAMBIAR_CLAVE_LOCAL' IN ROLE rol_docente;   END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_directivo') THEN CREATE ROLE usr_directivo LOGIN PASSWORD 'CAMBIAR_CLAVE_LOCAL' IN ROLE rol_directivo; END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'usr_apoderado') THEN CREATE ROLE usr_apoderado LOGIN PASSWORD 'CAMBIAR_CLAVE_LOCAL' IN ROLE rol_apoderado; END IF;
 END $$;
  
 -- 4. Acceso a la base de datos y al esquema

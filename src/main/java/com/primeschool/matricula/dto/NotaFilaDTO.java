@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+/**
+ * Fila con la calificación actual de un estudiante en un curso.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

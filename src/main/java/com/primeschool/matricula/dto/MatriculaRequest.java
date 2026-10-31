@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Datos necesarios para registrar una matrícula.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

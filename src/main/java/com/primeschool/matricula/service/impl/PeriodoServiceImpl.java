@@ -12,26 +12,47 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Implementación del servicio de periodos académicos.
+ */
 @Service
 public class PeriodoServiceImpl implements PeriodoService {
 
     private final PeriodoAcademicoRepository periodoRepository;
 
+    /**
+     * Crea el servicio con el repositorio de periodos.
+     *
+     * @param periodoRepository repositorio de periodos
+     */
     public PeriodoServiceImpl(PeriodoAcademicoRepository periodoRepository) {
         this.periodoRepository = periodoRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<PeriodoAcademico> listar() {
         return periodoRepository.findAllByOrderByFechaInicioAsc();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si el periodo no existe
+     */
     @Override
     public PeriodoAcademico obtener(Integer id) {
         return periodoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Periodo no encontrado"));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si ningún periodo contiene la fecha
+     */
     @Override
     public PeriodoAcademico periodoAnualQueContiene(LocalDate fecha) {
         return periodoRepository.findAllByOrderByFechaInicioAsc().stream()
@@ -41,6 +62,11 @@ public class PeriodoServiceImpl implements PeriodoService {
                         "No existe un periodo académico que contenga la fecha " + fecha));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si el periodo no pertenece a uno anual
+     */
     @Override
     public PeriodoAcademico periodoAnualPara(PeriodoAcademico periodo) {
         if (periodo == null) {
@@ -54,6 +80,9 @@ public class PeriodoServiceImpl implements PeriodoService {
                         "El periodo seleccionado no pertenece a un periodo anual"));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean esAnual(PeriodoAcademico periodo) {
         if (periodo == null) {
@@ -63,6 +92,11 @@ public class PeriodoServiceImpl implements PeriodoService {
                 .noneMatch(p -> !p.getIdPeriodo().equals(periodo.getIdPeriodo()) && p.contiene(periodo));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si los datos del periodo no son válidos
+     */
     @Override
     @Transactional
     public void crear(String nombre, LocalDate fechaInicio, LocalDate fechaFin) {

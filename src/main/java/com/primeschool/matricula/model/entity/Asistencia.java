@@ -18,6 +18,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * Registro de asistencia diaria de un estudiante matriculado.
+ */
 @Entity
 @Table(name = "asistencia")
 @Getter

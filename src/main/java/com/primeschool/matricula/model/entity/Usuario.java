@@ -16,6 +16,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Usuario del sistema con credenciales de acceso y un rol asignado.
+ */
 @Entity
 @Table(name = "usuario")
 @Getter
@@ -57,6 +60,11 @@ public class Usuario {
         }
     }
 
+    /**
+     * Devuelve los nombres y apellidos del usuario.
+     *
+     * @return nombre completo del usuario
+     */
     public String getNombreCompleto() {
         return nombres + " " + apellidos;
     }

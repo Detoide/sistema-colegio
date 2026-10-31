@@ -12,7 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,12 +72,35 @@ class AdminServiceIntegrationTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMINISTRADOR")
     void rechazaCorreoDuplicado() {
         UsuarioRequest request = usuarioRequest("admin@colegio.test", "ADMINISTRADOR");
 
         assertThatThrownBy(() -> usuarioService.crear(request))
                 .isInstanceOf(ReglaNegocioException.class)
                 .hasMessageContaining("Ya existe un usuario");
+    }
+
+    @Test
+    @WithMockUser(roles = "DIRECTIVO")
+    void directivoNoPuedeCrearAdministrador() {
+        UsuarioRequest request = usuarioRequest(
+                "nuevo.admin." + (System.nanoTime() % 1_000_000L) + "@test.local", "ADMINISTRADOR");
+
+        assertThatThrownBy(() -> usuarioService.crear(request))
+                .isInstanceOf(AccessDeniedException.class)
+                .hasMessageContaining("Solo un administrador");
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMINISTRADOR")
+    void administradorPuedeCrearAdministrador() {
+        UsuarioRequest request = usuarioRequest(
+                "nuevo.admin." + (System.nanoTime() % 1_000_000L) + "@test.local", "ADMINISTRADOR");
+
+        Usuario creado = usuarioService.crear(request);
+
+        assertThat(creado.getRol().getNombreRol()).isEqualTo("ADMINISTRADOR");
     }
 
     @Test

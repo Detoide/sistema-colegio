@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Grado académico ofrecido por la institución.
+ */
 @Entity
 @Table(name = "grado")
 @Getter
@@ -28,6 +31,11 @@ public class Grado {
     @Column(name = "nivel", nullable = false, length = 20)
     private String nivel;
 
+    /**
+     * Devuelve la descripción del grado con su nivel académico.
+     *
+     * @return descripción en formato nombre - nivel
+     */
     public String getDescripcion() {
         return nombreGrado + " - " + nivel;
     }

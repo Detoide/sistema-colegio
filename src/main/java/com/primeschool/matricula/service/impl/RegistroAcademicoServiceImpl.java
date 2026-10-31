@@ -22,6 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Implementación que combina los servicios de notas y asistencia para
+ * construir y guardar la planilla académica.
+ */
 @Service
 public class RegistroAcademicoServiceImpl implements RegistroAcademicoService {
 
@@ -29,6 +33,13 @@ public class RegistroAcademicoServiceImpl implements RegistroAcademicoService {
     private final AsistenciaService asistenciaService;
     private final PeriodoService periodoService;
 
+    /**
+     * Crea el servicio con los servicios de notas, asistencia y periodos.
+     *
+     * @param notaService servicio de notas
+     * @param asistenciaService servicio de asistencia
+     * @param periodoService servicio de periodos
+     */
     public RegistroAcademicoServiceImpl(NotaService notaService,
                                         AsistenciaService asistenciaService,
                                         PeriodoService periodoService) {
@@ -37,6 +48,11 @@ public class RegistroAcademicoServiceImpl implements RegistroAcademicoService {
         this.periodoService = periodoService;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si el periodo o la fecha no son válidos
+     */
     @Override
     public List<RegistroAcademicoFilaDTO> planilla(Integer seccionId,
                                                    Integer periodoId,
@@ -64,6 +80,11 @@ public class RegistroAcademicoServiceImpl implements RegistroAcademicoService {
                 .toList();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si faltan datos o el periodo no es válido
+     */
     @Override
     @Transactional
     public void guardar(RegistroAcademicoForm form, Usuario usuario) {

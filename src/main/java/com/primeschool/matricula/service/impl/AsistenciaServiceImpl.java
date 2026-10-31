@@ -27,6 +27,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Implementación del servicio de asistencia.
+ *
+ * <p>Valida el acceso del docente tutor y actualiza las alertas de
+ * inasistencia al guardar los estados de asistencia.</p>
+ */
 @Service
 public class AsistenciaServiceImpl implements AsistenciaService {
 
@@ -39,6 +45,15 @@ public class AsistenciaServiceImpl implements AsistenciaService {
     private final PeriodoService periodoService;
     private final AlertaService alertaService;
 
+    /**
+     * Crea el servicio con sus repositorios y servicios de apoyo.
+     *
+     * @param asistenciaRepository repositorio de asistencias
+     * @param matriculaRepository repositorio de matrículas
+     * @param seccionRepository repositorio de secciones
+     * @param periodoService servicio de periodos
+     * @param alertaService servicio de alertas
+     */
     public AsistenciaServiceImpl(AsistenciaRepository asistenciaRepository,
                                  MatriculaRepository matriculaRepository,
                                  SeccionRepository seccionRepository,
@@ -51,6 +66,12 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         this.alertaService = alertaService;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si la sección no existe
+     * @throws ReglaNegocioException si el usuario no puede consultar la planilla
+     */
     @Override
     public List<AsistenciaFilaDTO> planilla(Integer seccionId, LocalDate fecha, Usuario usuario) {
         if (seccionId == null || fecha == null) {
@@ -79,6 +100,12 @@ public class AsistenciaServiceImpl implements AsistenciaService {
                 .toList();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si el usuario, el estado o la matrícula no son válidos
+     * @throws RecursoNoEncontradoException si la sección no existe
+     */
     @Override
     @Transactional
     public void guardar(AsistenciaForm form, Usuario usuario) {
@@ -130,6 +157,9 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<EstadoAsistencia, Long> resumen(Integer matriculaId, LocalDate desde, LocalDate hasta) {
         Map<EstadoAsistencia, Long> resumen = new EnumMap<>(EstadoAsistencia.class);

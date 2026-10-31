@@ -46,23 +46,22 @@ Aplicación web para **Prime School** que automatiza la matrícula de estudiante
 
 > **Advertencia:** `docs/schema.sql` elimina y vuelve a crear las tablas (`DROP TABLE`). No debe ejecutarse sobre una base de datos de producción.
 
-El script crea los roles de aplicación, los usuarios de conexión de PostgreSQL y datos de prueba para iniciar sesión. Debe ejecutarse con un superusuario de PostgreSQL (por ejemplo, `postgres`), ya que crea roles y permisos. La aplicación se conecta con el rol `usr_admin` (contraseña `Test123`), también creado por el script.
+El script crea los roles de aplicación, los usuarios de conexión de PostgreSQL y datos de prueba para iniciar sesión. Debe ejecutarse con un superusuario de PostgreSQL (por ejemplo, `postgres`), ya que crea roles y permisos. Antes de ejecutarlo, reemplaza `CAMBIAR_CLAVE_LOCAL` por una contraseña local y define `DB_PASSWORD` con ese mismo valor. La aplicación se conecta con el rol `usr_admin`.
 
 ## Variables de configuración
 
-Las variables se pueden definir en el entorno o en `src/main/resources/application.properties`.
+Las variables se pueden definir en el entorno o en la configuración de ejecución. `DB_PASSWORD` es obligatoria y no debe guardarse en el repositorio.
 
 | Variable | Valor por defecto | Descripción |
 |---|---|---|
 | `DB_URL` | `jdbc:postgresql://localhost:5432/colegio_db` | URL JDBC de PostgreSQL |
 | `DB_USER` | `usr_admin` | Usuario de conexión |
-| `DB_PASSWORD` | `Test123` | Contraseña de conexión |
+| `DB_PASSWORD` | Sin valor | Contraseña de conexión (obligatoria) |
 | `SERVER_PORT` | `8080` | Puerto HTTP de la aplicación |
-| `MIGRAR_PASSWORDS` | `true` | Convierte contraseñas semilla a BCrypt al iniciar |
 | `UMBRAL_NOTA` | `11` | Nota mínima para considerar riesgo de reprobación |
 | `FALTAS_ALERTA` | `3` | Cantidad de faltas que genera una alerta |
 
-> Cambiar las credenciales por defecto antes de desplegar en producción.
+> `DB_PASSWORD` no tiene valor por defecto; debe definirse antes de iniciar la aplicación o ejecutar las pruebas.
 
 ## Ejecución local
 
@@ -86,26 +85,26 @@ La aplicación queda disponible en:
 http://localhost:8080
 ```
 
-En IntelliJ IDEA se puede abrir `MatriculaApplication.java` y usar el botón verde. El proyecto incluye la configuración `.run/MatriculaApplication.run.xml`, que agrega las dependencias `provided` (Tomcat y Jasper) al classpath, por lo que no es necesario ejecutar `spring-boot:run` ni abrir la ventana Maven. Si se crea una configuración propia, activar **Add dependencies with "provided" scope to classpath**.
+En IntelliJ IDEA se puede abrir `MatriculaApplication.java` y usar el botón verde. El proyecto incluye la configuración `.run/MatriculaApplication.run.xml`, que agrega las dependencias `provided` (Tomcat y Jasper) al classpath, por lo que no es necesario ejecutar `spring-boot:run` ni abrir la ventana Maven. Si se crea una configuración propia, activar **Add dependencies with "provided" scope to classpath** y definir la variable de entorno `DB_PASSWORD`.
 
 ## Cuentas de acceso
 
 ### Usuarios de la aplicación
 
-| Rol | Correo | Contraseña |
-|---|---|---|
-| Administrador | `admin@colegio.test` | `123` |
-| Docente | `docente@colegio.test` | `123` |
-| Directivo | `directivo@colegio.test` | `123` |
-| Apoderado | `apoderado@correo.test` | `123` |
+| Rol | Correo |
+|---|---|
+| Administrador | `admin@colegio.test` |
+| Docente | `docente@colegio.test` |
+| Directivo | `directivo@colegio.test` |
+| Apoderado | `apoderado@correo.test` |
 
-Al iniciar la aplicación, `PasswordMigrationRunner` reemplaza las contraseñas en texto plano por hashes BCrypt. Las credenciales de acceso siguen siendo las mismas.
+Las contraseñas de las cuentas semilla se almacenan como hashes BCrypt en `docs/schema.sql`; no se documentan en este repositorio.
 
 ### Cuenta de conexión a PostgreSQL
 
-La aplicación se conecta con el rol `usr_admin` y la contraseña `Test123`, creado por `docs/schema.sql`.
+La aplicación se conecta con el rol `usr_admin`, creado por `docs/schema.sql`. La contraseña se define al preparar la base de datos y se pasa a la aplicación mediante `DB_PASSWORD`.
 
-`Test123` no es la contraseña del superusuario `postgres`: ese usuario solo se utiliza para ejecutar el esquema. Las credenciales de conexión se pueden sobrescribir con las variables `DB_USER` y `DB_PASSWORD`.
+La contraseña de `usr_admin` no es la del superusuario `postgres`: ese usuario solo se utiliza para ejecutar el esquema. Si la base de datos ya existe, cambia la contraseña con `ALTER ROLE usr_admin PASSWORD '...'` y actualiza `DB_PASSWORD`. Las credenciales de conexión se pueden sobrescribir con las variables `DB_USER` y `DB_PASSWORD`.
 
 ## Rutas principales
 
@@ -136,7 +135,7 @@ En macOS/Linux:
 ./mvnw test
 ```
 
-Las pruebas son de integración (`@SpringBootTest`) y utilizan la base de datos configurada con los datos semilla de `docs/schema.sql`. Por ello, PostgreSQL debe estar en ejecución antes de lanzarlas.
+Las pruebas son de integración (`@SpringBootTest`) y utilizan la base de datos configurada con los datos semilla de `docs/schema.sql`. Por ello, PostgreSQL debe estar en ejecución y `DB_PASSWORD` debe estar definida antes de lanzarlas.
 
 ## Build y despliegue
 

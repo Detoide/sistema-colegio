@@ -13,6 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Sección de un grado, con su docente tutor y control de vacantes.
+ */
 @Entity
 @Table(name = "seccion")
 @Getter
@@ -42,10 +45,20 @@ public class Seccion {
     @Column(name = "vacantes_disponibles", nullable = false)
     private Integer vacantesDisponibles;
 
+    /**
+     * Devuelve la descripción de la sección con su grado.
+     *
+     * @return descripción en formato grado y nombre de sección
+     */
     public String getDescripcion() {
         return grado.getNombreGrado() + " " + nombreSeccion;
     }
 
+    /**
+     * Devuelve el nombre del docente tutor de la sección.
+     *
+     * @return nombre del tutor o cadena vacía si no está asignado
+     */
     public String getTutorNombre() {
         return tutor != null ? tutor.getNombreCompleto() : "";
     }

@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,13 +58,46 @@ class SecurityAccessIntegrationTest {
     @Test
     @WithUserDetails("directivo@colegio.test")
     void directivoAccedeAAdministracionYConsultas() throws Exception {
-        mvc.perform(get("/admin/usuarios")).andExpect(status().isOk());
+        mvc.perform(get("/admin/usuarios")).andExpect(status().isForbidden());
+        mvc.perform(post("/admin/usuarios").with(csrf())).andExpect(status().isForbidden());
         mvc.perform(get("/admin/periodos")).andExpect(status().isOk());
         mvc.perform(get("/admin/catalogos")).andExpect(status().isOk());
         mvc.perform(get("/matriculas/nueva")).andExpect(status().isOk());
         mvc.perform(get("/notas")).andExpect(status().isOk());
         mvc.perform(get("/asistencia")).andExpect(status().isOk());
         mvc.perform(get("/registro-academico")).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails("admin@colegio.test")
+    void administradorAccedeAGestionDeUsuarios() throws Exception {
+        mvc.perform(get("/admin/usuarios")).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails("admin@colegio.test")
+    void rechazaSeccionConNombreDemasiadoLargo() throws Exception {
+        mvc.perform(post("/admin/secciones")
+                        .with(csrf())
+                        .param("gradoId", "1")
+                        .param("tutorId", "2")
+                        .param("nombreSeccion", "ABCDEF")
+                        .param("vacantesTotales", "5"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithUserDetails("admin@colegio.test")
+    void formularioEstudianteRechazaCodigoLargo() throws Exception {
+        mvc.perform(post("/estudiantes")
+                        .with(csrf())
+                        .param("apoderadoId", "1")
+                        .param("codigo", "1234567890123456")
+                        .param("nombres", "Prueba")
+                        .param("apellidos", "Prueba")
+                        .param("fechaNacimiento", "2010-01-01"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasFieldErrors("estudiante", "codigo"));
     }
 
     @Test

@@ -22,6 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * Controlador de consulta y registro de notas.
+ */
 @Controller
 public class NotasController {
 
@@ -30,6 +33,14 @@ public class NotasController {
     private final PeriodoService periodoService;
     private final UsuarioSesion usuarioSesion;
 
+    /**
+     * Crea el controlador con los servicios de notas y catálogos.
+     *
+     * @param notaService servicio de notas
+     * @param catalogoService servicio de catálogos
+     * @param periodoService servicio de periodos
+     * @param usuarioSesion accesor del usuario autenticado
+     */
     public NotasController(NotaService notaService,
                            CatalogoService catalogoService,
                            PeriodoService periodoService,
@@ -40,6 +51,16 @@ public class NotasController {
         this.usuarioSesion = usuarioSesion;
     }
 
+    /**
+     * Muestra la planilla de notas según los filtros seleccionados.
+     *
+     * @param seccionId identificador de la sección
+     * @param periodoId identificador del periodo
+     * @param cursoId identificador del curso
+     * @param authentication autenticación de Spring Security
+     * @param model modelo de la vista
+     * @return nombre de la vista de notas
+     */
     @GetMapping("/notas")
     public String planilla(@RequestParam(required = false) Integer seccionId,
                            @RequestParam(required = false) Integer periodoId,
@@ -68,6 +89,14 @@ public class NotasController {
         return "notas/planilla";
     }
 
+    /**
+     * Guarda las notas registradas en la planilla.
+     *
+     * @param form datos de la planilla
+     * @param authentication autenticación de Spring Security
+     * @param redirectAttributes atributos para la redirección
+     * @return redirección a la planilla con los filtros aplicados
+     */
     @PostMapping("/notas")
     public String guardar(@ModelAttribute("notaForm") NotaForm form,
                           Authentication authentication,

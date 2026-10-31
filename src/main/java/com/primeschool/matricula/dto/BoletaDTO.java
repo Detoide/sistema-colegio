@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Datos consolidados de una boleta de notas y asistencia.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

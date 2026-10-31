@@ -17,6 +17,9 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Calificación registrada para un estudiante en un curso y periodo.
+ */
 @Entity
 @Table(name = "nota")
 @Getter

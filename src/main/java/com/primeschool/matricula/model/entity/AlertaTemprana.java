@@ -20,6 +20,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Alerta generada para advertir un riesgo académico o de asistencia.
+ */
 @Entity
 @Table(name = "alerta_temprana")
 @Getter
@@ -59,10 +62,20 @@ public class AlertaTemprana {
         }
     }
 
+    /**
+     * Devuelve el nombre del estudiante asociado a la alerta.
+     *
+     * @return nombre del estudiante o cadena vacía si no está asociado
+     */
     public String getEstudianteNombre() {
         return matricula != null ? matricula.getEstudianteNombre() : "";
     }
 
+    /**
+     * Devuelve la fecha de generación formateada para su presentación.
+     *
+     * @return fecha en formato dd/MM/yyyy HH:mm o cadena vacía si no está definida
+     */
     public String getFechaGeneradaTexto() {
         return fechaGenerada != null
                 ? fechaGenerada.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))

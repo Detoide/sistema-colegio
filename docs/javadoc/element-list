@@ -1,0 +1,11 @@
+com.primeschool.matricula
+com.primeschool.matricula.config
+com.primeschool.matricula.dto
+com.primeschool.matricula.exception
+com.primeschool.matricula.model.entity
+com.primeschool.matricula.model.enums
+com.primeschool.matricula.repository
+com.primeschool.matricula.security
+com.primeschool.matricula.service
+com.primeschool.matricula.service.impl
+com.primeschool.matricula.web

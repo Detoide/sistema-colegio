@@ -23,6 +23,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementación del servicio de matrículas.
+ *
+ * <p>Controla la disponibilidad de vacantes y aplica las reglas de negocio
+ * para registrar, confirmar y anular matrículas.</p>
+ */
 @Service
 public class MatriculaServiceImpl implements MatriculaService {
 
@@ -35,6 +41,15 @@ public class MatriculaServiceImpl implements MatriculaService {
     private final PeriodoAcademicoRepository periodoRepository;
     private final PeriodoService periodoService;
 
+    /**
+     * Crea el servicio con sus repositorios y el servicio de periodos.
+     *
+     * @param matriculaRepository repositorio de matrículas
+     * @param estudianteRepository repositorio de estudiantes
+     * @param seccionRepository repositorio de secciones
+     * @param periodoRepository repositorio de periodos
+     * @param periodoService servicio de periodos
+     */
     public MatriculaServiceImpl(MatriculaRepository matriculaRepository,
                                 EstudianteRepository estudianteRepository,
                                 SeccionRepository seccionRepository,
@@ -47,28 +62,43 @@ public class MatriculaServiceImpl implements MatriculaService {
         this.periodoService = periodoService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Matricula> listar() {
         return matriculaRepository.findAllByOrderByPeriodo_FechaInicioDescEstudiante_ApellidosAsc();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Matricula> listarPorPeriodo(Integer idPeriodo) {
         return matriculaRepository.findByPeriodo_IdPeriodoOrderByEstudiante_ApellidosAsc(idPeriodo);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Matricula> listarPorSeccionYPeriodo(Integer idSeccion, Integer idPeriodo) {
         return matriculaRepository.findBySeccion_IdSeccionAndPeriodo_IdPeriodoOrderByEstudiante_ApellidosAsc(
                 idSeccion, idPeriodo);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Matricula> listarVigentesPorSeccionYPeriodo(Integer idSeccion, Integer idPeriodo) {
         return matriculaRepository.findBySeccion_IdSeccionAndPeriodo_IdPeriodoAndEstadoInOrderByEstudiante_ApellidosAsc(
                 idSeccion, idPeriodo, ESTADOS_ACTIVOS);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Matricula> listarVisibles(Usuario usuario) {
         String rol = usuario.getRol().getNombreRol().toUpperCase();
@@ -84,12 +114,23 @@ public class MatriculaServiceImpl implements MatriculaService {
         };
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si la matrícula no existe
+     */
     @Override
     public Matricula obtener(Integer id) {
         return matriculaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Matrícula no encontrada"));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si el estudiante, periodo o sección no existen
+     * @throws ReglaNegocioException si el periodo, la matrícula o las vacantes no son válidos
+     */
     @Override
     @Transactional
     public Matricula registrar(MatriculaRequest request) {
@@ -131,6 +172,11 @@ public class MatriculaServiceImpl implements MatriculaService {
         return matricula;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si la matrícula o la sección no existen
+     */
     @Override
     @Transactional
     public void anular(Integer id) {
@@ -149,6 +195,12 @@ public class MatriculaServiceImpl implements MatriculaService {
         seccionRepository.save(seccion);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws RecursoNoEncontradoException si la matrícula no existe
+     * @throws ReglaNegocioException si la matrícula no está pendiente
+     */
     @Override
     @Transactional
     public void confirmar(Integer id) {
@@ -160,6 +212,9 @@ public class MatriculaServiceImpl implements MatriculaService {
         matriculaRepository.save(matricula);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<VacanteDTO> consultarVacantes() {
         return seccionRepository.findAllByOrderByGrado_NombreGradoAscNombreSeccionAsc().stream()

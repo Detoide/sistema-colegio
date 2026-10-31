@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementación del servicio de catálogos académicos.
+ */
 @Service
 public class CatalogoServiceImpl implements CatalogoService {
 
@@ -25,6 +28,14 @@ public class CatalogoServiceImpl implements CatalogoService {
     private final SeccionRepository seccionRepository;
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Crea el servicio con los repositorios de catálogos.
+     *
+     * @param gradoRepository repositorio de grados
+     * @param cursoRepository repositorio de cursos
+     * @param seccionRepository repositorio de secciones
+     * @param usuarioRepository repositorio de usuarios
+     */
     public CatalogoServiceImpl(GradoRepository gradoRepository,
                                CursoRepository cursoRepository,
                                SeccionRepository seccionRepository,
@@ -35,26 +46,41 @@ public class CatalogoServiceImpl implements CatalogoService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Grado> listarGrados() {
         return gradoRepository.findAllByOrderByNivelAscNombreGradoAsc();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Curso> listarCursos() {
         return cursoRepository.findAllByOrderByNombreCursoAsc();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Seccion> listarSecciones() {
         return seccionRepository.findAllByOrderByGrado_NombreGradoAscNombreSeccionAsc();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Seccion> listarSeccionesPorTutor(Integer idUsuario) {
         return seccionRepository.findByTutor_IdUsuarioOrderByGrado_NombreGradoAscNombreSeccionAsc(idUsuario);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<VacanteDTO> listarVacantes() {
         return listarSecciones().stream()
@@ -68,6 +94,11 @@ public class CatalogoServiceImpl implements CatalogoService {
                 .toList();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si los datos son inválidos o el grado ya existe
+     */
     @Override
     @Transactional
     public void crearGrado(String nombreGrado, String nivel) {
@@ -83,6 +114,11 @@ public class CatalogoServiceImpl implements CatalogoService {
         gradoRepository.save(grado);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si el nombre es inválido o el curso ya existe
+     */
     @Override
     @Transactional
     public void crearCurso(String nombreCurso, String competencia) {
@@ -98,6 +134,12 @@ public class CatalogoServiceImpl implements CatalogoService {
         cursoRepository.save(curso);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws ReglaNegocioException si los datos son inválidos o la sección ya existe
+     * @throws RecursoNoEncontradoException si el grado o el tutor no existen
+     */
     @Override
     @Transactional
     public void crearSeccion(Integer idGrado, Integer idTutor, String nombreSeccion, Integer vacantesTotales) {
